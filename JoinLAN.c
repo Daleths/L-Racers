@@ -338,27 +338,31 @@ void MenuFunc_JoinGame_Join(void)
 		}
 		else
 		{
-			// We received a message. Example: LR-ACCEPTED:01:Joe
+			// We received a message. Example: LR-ACCEPTED:01:02:Joe
 			if (strncmp(gNetworkData.RecvBuffer, "LR-ACCEPTED:", 12) == 0)
 			{
 				char ColorAsString[3] = { 0 };
 
-				int ColorIndex = 0;
+				char MapAsString[3] = { 0 };				
 
 				ColorAsString[0] = gNetworkData.RecvBuffer[12];
 
 				ColorAsString[1] = gNetworkData.RecvBuffer[13];
 
-				ColorIndex = atoi(ColorAsString);
+				gPlayers[PLAYER_TWO].ColorIndex = (uint8_t)atoi(ColorAsString);
+
+				MapAsString[0] = gNetworkData.RecvBuffer[15];
+
+				MapAsString[1] = gNetworkData.RecvBuffer[16];
+
+				gMapStyle = (uint8_t)atoi(MapAsString);
 
 				_snprintf_s(
 					gPlayers[PLAYER_TWO].Name,
 					sizeof(gPlayers[PLAYER_TWO].Name),
 					_TRUNCATE,
 					"%s",
-					gNetworkData.RecvBuffer + 15);
-
-				gPlayers[PLAYER_TWO].ColorIndex = (uint8_t)ColorIndex;				
+					gNetworkData.RecvBuffer + 18);				
 
 				ResetEverythingForNewGame();
 
@@ -417,7 +421,7 @@ void ReceiveBroadcasts(void)
 		}
 		else
 		{
-			// We received a message. Example: LR-HOST:01:Gabriel
+			// We received a message. Example: LR-HOST:01:02:Gabriel
 			if (strncmp(gNetworkData.BroadcastBuffer, "LR-HOST:", 8) == 0)
 			{
 				BOOL Match = FALSE;
@@ -425,6 +429,8 @@ void ReceiveBroadcasts(void)
 				char PlayerName[16] = { 0 };
 
 				char ColorAsString[3] = { 0 };
+
+				char MapAsString[3] = { 0 };
 
 				int ColorIndex = 0;
 
@@ -434,12 +440,16 @@ void ReceiveBroadcasts(void)
 
 				ColorIndex = atoi(ColorAsString);
 
+				MapAsString[0] = gNetworkData.BroadcastBuffer[11];
+
+				MapAsString[1] = gNetworkData.BroadcastBuffer[12];				
+
 				_snprintf_s(
 					PlayerName, 
 					sizeof(PlayerName), 
 					_TRUNCATE, 
 					"%s",
-					gNetworkData.BroadcastBuffer + 11);
+					gNetworkData.BroadcastBuffer + 14);
 
 				// if we find a match, update the last seen time
 				// if no match found, add it				
@@ -469,6 +479,8 @@ void ReceiveBroadcasts(void)
 							gGameHosts[i].ColorIndex = (uint8_t)ColorIndex;
 
 							gGameHosts[i].LastSeen = gTotalFramesRendered;
+
+							gGameHosts[i].Map = (uint8_t)atoi(MapAsString);
 
 							_snprintf_s(
 								gGameHosts[i].Name,

@@ -64,6 +64,12 @@ void Draw_PostAction(void)
 
 			gGameState = GAMESTATE_ACTIONSCREEN;
 		}
+
+		// The other party has quit. We should return to the title screen also.
+		if (strcmp(gNetworkData.RecvBuffer, "LR-QUIT") == 0)
+		{
+			MenuFunc_PostAction_MainMenu();
+		}
 	}
 
 	if (LocalFrameCounter == 120)
@@ -245,6 +251,8 @@ void PPI_PostAction(void)
 	}
 }
 
+// Only the host may choose to Play Again
+// The client only has the option to return to the main menu.
 void MenuFunc_PostAction_PlayAgain(void)
 {
 	ResetEverythingForNewGame();
@@ -271,6 +279,23 @@ void MenuFunc_PostAction_PlayAgain(void)
 
 void MenuFunc_PostAction_MainMenu(void)
 {
+	// if we are the client in a network game, we need to send the signal to the host that we are quitting.
+	// or else the host may try to just keep playing even though the client is no longer there.
+
+	_snprintf_s(
+		gNetworkData.SendBuffer,
+		sizeof(gNetworkData.SendBuffer),
+		_TRUNCATE,
+		"LR-QUIT");
+
+	sendto(
+		gNetworkData.UnicastSocket,
+		gNetworkData.SendBuffer,
+		(int)strlen(gNetworkData.SendBuffer) + 1,
+		0,
+		(struct sockaddr*)&gNetworkData.RemoteAddress,
+		sizeof(struct sockaddr_in));
+
 	if (gNetworkData.NetworkInitialized)
 	{
 		WSACleanup();
@@ -278,7 +303,7 @@ void MenuFunc_PostAction_MainMenu(void)
 		gNetworkData.NetworkInitialized = FALSE;
 	}
 
-	memset(gGameHosts, 0, (sizeof(GAMEHOST) * _countof(gGameHosts)));	
+	memset(gGameHosts, 0, (sizeof(GAMEHOST) * _countof(gGameHosts)));
 
 	gGameState = GAMESTATE_TITLESCREEN;
 }

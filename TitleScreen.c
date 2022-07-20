@@ -19,14 +19,15 @@ MENUITEM* gMI_TitleScreenItems[] = { &gMI_1PlayerVsCPU, &gMI_2PlayerLocal, &gMI_
 MENU gMENU_TitleScreen = { "Title Screen", 0, _countof(gMI_TitleScreenItems), gMI_TitleScreenItems };
 
 const char* gMarquee = "Welcome to L-RACERS! Player 1 may use either the WASD keys or the arrow keys \
-to move. If playing a 2-Player Local game, Player 1 uses the WASD keys and Player 2 uses \
+to move. In a 2-Player Local game, Player 1 uses the WASD keys and Player 2 uses \
 the arrow keys. Both players may also use the D-pads on XInput-compatible gamepads. You can change the \
 color of your player in the Options menu. Only players on the Local Area Network \
 will appear in the list of available hosts when attempting to join a multiplayer game. If you're \
 trying to play with someone over the internet, you need to manually enter their IP address. \
 Firewalls may prevent packets from reaching their destination. This game listens on UDP ports 9657 and 9658. \
-In multiplayer games, the host will always be on the left side. \
-So... thanks for playing! L-RACERS was created by Joseph Ryan Ries in 2022 as an homage to retro gaming.";
+In multiplayer games, the host will always be on the left side. Host also decides which map you will play. \
+Thanks for playing! L-RACERS was created by Joseph Ryan Ries in 2022 as an homage to retro gaming. \
+Music by nocturnalplant.";
 
 void Draw_TitleScreen(void)
 {

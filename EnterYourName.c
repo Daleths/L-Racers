@@ -148,7 +148,14 @@ void Draw_EnterYourName(void)
     {
         LocalFrameCounter = 0;
 
-        gMENU_EnterYourName.SelectedItem = 0;        
+        gMENU_EnterYourName.SelectedItem = 0;
+
+        LoadPlayerName();
+
+        if (strlen(gPlayers[PLAYER_ONE].Name) > 0)
+        {
+            gMI_EnterYourName_OK.Enabled = TRUE;
+        }
     }    
 
     Blit32BppBitmap(&gTopAccentPicture, 0, 0);
@@ -507,6 +514,12 @@ void MenuFunc_EnterYourName_OK(void)
         else
         {
             gGameState = GAMESTATE_JOINLANGAME;
-        }        
+        } 
+
+        // save the player's name for future use
+        if (SavePlayerName() != ERROR_SUCCESS)
+        {
+            MessageBoxW(NULL, L"Failed to save the player's name!", L"WARNING", MB_ICONWARNING | MB_OK);
+        }
     }
 }

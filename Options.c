@@ -2,21 +2,25 @@
 
 #include "Options.h"
 
-MENUITEM gMI_P1Color = { "Player 1 Color:", 110, 78, TRUE, MenuFunc_Options_P1Color };
+MENUITEM gMI_P1Color = { "Player 1 Color:", 110, 65, TRUE, MenuFunc_Options_P1Color };
 
-MENUITEM gMI_P2Color = { "Player 2 Color:", 110, 93, TRUE, MenuFunc_Options_P2Color };
+MENUITEM gMI_P2Color = { "Player 2 Color:", 110, 80, TRUE, MenuFunc_Options_P2Color };
 
-MENUITEM gMI_MusicVolume = { "Music Volume:", 110, 108, TRUE, MenuFunc_Options_MusicVolume };
+MENUITEM gMI_MusicVolume = { "Music Volume:", 110, 95, TRUE, MenuFunc_Options_MusicVolume };
 
-MENUITEM gMI_SFXVolume = { "SFX Volume:", 110, 123, TRUE, MenuFunc_Options_SFXVolume };
+MENUITEM gMI_SFXVolume = { "SFX Volume:", 110, 110, TRUE, MenuFunc_Options_SFXVolume };
 
-MENUITEM gMI_Fullscreen = { "Fullscreen:", 110, 138, TRUE, MenuFunc_Options_Fullscreen };
+MENUITEM gMI_MapStyle = { "Map Style:", 110, 125, TRUE, MenuFunc_Options_MapStyle };
 
-MENUITEM gMI_Back = { "Back", 110, 153, TRUE, MenuFunc_Options_Back };
+MENUITEM gMI_Fullscreen = { "Fullscreen:", 110, 140, TRUE, MenuFunc_Options_Fullscreen };
 
-MENUITEM* gMI_OptionsItems[] = { &gMI_P1Color, &gMI_P2Color, &gMI_MusicVolume, &gMI_SFXVolume, &gMI_Fullscreen, &gMI_Back };
+MENUITEM gMI_Back = { "Back", 110, 155, TRUE, MenuFunc_Options_Back };
+
+MENUITEM* gMI_OptionsItems[] = { &gMI_P1Color, &gMI_P2Color, &gMI_MusicVolume, &gMI_SFXVolume, &gMI_MapStyle, &gMI_Fullscreen, &gMI_Back };
 
 MENU gMENU_Options = { "Options", 0, _countof(gMI_OptionsItems), gMI_OptionsItems };
+
+char gMapStyleString[8];
 
 void Draw_Options(void)
 {
@@ -24,13 +28,15 @@ void Draw_Options(void)
 
 	static uint64_t LocalFrameCounter;
 
-	static uint64_t LastFrameSeen;
-
+	static uint64_t LastFrameSeen;	
+		 
 	if (gTotalFramesRendered > (LastFrameSeen + 1))
 	{
 		LocalFrameCounter = 0;
 
 		gMENU_Options.SelectedItem = 0;
+
+		_itoa_s(gMapStyle, gMapStyleString, _countof(gMapStyleString), 10);
 	}
 
 	Blit32BppBitmap(&gTopAccentPicture, 0, 0);
@@ -60,7 +66,7 @@ void Draw_Options(void)
 		0,
 		0,
 		192,
-		104,
+		120,
 		&FULL_GREEN_PIXEL,
 		&BLACK_PIXEL,
 		&DARK_GREEN_PIXEL,
@@ -109,7 +115,7 @@ void Draw_Options(void)
 	// Player 1 color
 	DrawRectangle(
 		200,
-		78,
+		gMI_P1Color.y,
 		8,
 		8,
 		NULL,
@@ -120,7 +126,7 @@ void Draw_Options(void)
 	// Player 2 color
 	DrawRectangle(
 		200,
-		93,
+		gMI_P2Color.y,
 		8,
 		8,
 		NULL,
@@ -128,6 +134,7 @@ void Draw_Options(void)
 		NULL,
 		DR_OPAQUE);
 
+	// Fullscreen: Enabled or Disabled
 	if (gFullscreen)
 	{
 		BlitString("Enabled",
@@ -148,6 +155,16 @@ void Draw_Options(void)
 			&DARK_GREEN_PIXEL,
 			BS_SHADOW);
 	}
+
+	// Map Style
+	BlitString(gMapStyleString,
+		&g6x7Font,
+		&FULL_GREEN_PIXEL,
+		gMI_MapStyle.x + 90,
+		gMI_MapStyle.y,
+		&DARK_GREEN_PIXEL,
+		BS_SHADOW);	
+	
 
 	// The menu cursor that shows which menu item is selected.
 	BlitString("\xBB",
@@ -329,6 +346,18 @@ void MenuFunc_Options_P2Color(void)
 			gPlayers[PLAYER_TWO].ColorIndex--;
 		}
 	}
+}
+
+void MenuFunc_Options_MapStyle(void)
+{
+	gMapStyle++;
+
+	if (gMapStyle > NUMBER_OF_MAPS)
+	{
+		gMapStyle = 0;
+	}
+
+	_itoa_s(gMapStyle, gMapStyleString, _countof(gMapStyleString), 10);
 }
 
 void MenuFunc_Options_Fullscreen(void)

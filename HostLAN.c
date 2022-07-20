@@ -125,15 +125,11 @@ void Draw_HostLANGame(void)
 			// We received a message. Example: "LR-JOIN:%02d:%s"
 			if (strncmp(gNetworkData.RecvBuffer, "LR-JOIN:", 8) == 0)
 			{
-				char ColorAsString[3] = { 0 };
-
-				int ColorIndex = 0;
+				char ColorAsString[3] = { 0 };				
 
 				ColorAsString[0] = gNetworkData.RecvBuffer[8];
 
-				ColorAsString[1] = gNetworkData.RecvBuffer[9];
-
-				ColorIndex = atoi(ColorAsString);
+				ColorAsString[1] = gNetworkData.RecvBuffer[9];				
 
 				_snprintf_s(
 					gPlayers[PLAYER_TWO].Name,
@@ -142,7 +138,7 @@ void Draw_HostLANGame(void)
 					"%s",
 					gNetworkData.RecvBuffer + 11);
 
-				gPlayers[PLAYER_TWO].ColorIndex = (uint8_t)ColorIndex;
+				gPlayers[PLAYER_TWO].ColorIndex = (uint8_t)atoi(ColorAsString);;
 
 				// send acknowledgement back to client that we have accepted his join request
 				// we are sending our color and name again in case the client did not receive our 
@@ -154,7 +150,7 @@ void Draw_HostLANGame(void)
 					gNetworkData.SendBuffer,
 					sizeof(gNetworkData.SendBuffer),
 					_TRUNCATE,
-					"LR-ACCEPTED:%02d:%s", gPlayers[PLAYER_ONE].ColorIndex, gPlayers[PLAYER_ONE].Name);
+					"LR-ACCEPTED:%02d:%02d:%s", gPlayers[PLAYER_ONE].ColorIndex, gMapStyle, gPlayers[PLAYER_ONE].Name);
 
 				sendto(
 					gNetworkData.UnicastSocket,

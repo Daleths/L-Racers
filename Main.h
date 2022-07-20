@@ -34,8 +34,6 @@
 // stb_vorbis by Sean T. Barrett - http://nothings.org/
 #include "stb_vorbis.h"
 
-
-
 #define GAME_NAME_W L"L-RACERS"
 
 #define GAME_NAME_A "L-RACERS"
@@ -321,6 +319,8 @@ typedef struct GAMEHOST
 
 	uint64_t LastSeen;
 
+	uint8_t Map;
+
 } GAMEHOST;
 
 /* BEGIN GLOBAL VARIABLE DECLARATIONS */
@@ -381,6 +381,8 @@ extern int8_t gGamepadsPresent;
 
 extern int8_t gGamepadsExpected;
 
+extern uint8_t gMapStyle;
+
 /* END GLOBAL VARIABLE DECLARATIONS */
 
 
@@ -433,3 +435,7 @@ int InitializeNetwork(void);
 void FindConnectedGamepads(void);
 
 void CalculateWindowPlacement(void);
+
+DWORD SavePlayerName(void);
+
+DWORD LoadPlayerName(void);

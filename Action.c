@@ -118,6 +118,301 @@ void Draw_Action(void)
 		}
 	}
 
+	// What map are we drawing?
+
+	switch (gMapStyle)
+	{
+		case 0:
+		{
+			// Do nothing, this is the default "blank" map.
+
+			break;
+		}
+		case 1:
+		{
+			// L-shape upper left corner
+			DrawRectangle(
+				32,
+				32,
+				64,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				32,
+				32,
+				4,
+				64,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			// L-shape upper-right corner
+			DrawRectangle(
+				RENDER_WIDTH - 96,
+				32,
+				64,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				RENDER_WIDTH - 36,
+				32,
+				4,
+				64,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			// L-shape lower-right corner
+			DrawRectangle(
+				RENDER_WIDTH - 96,
+				RENDER_HEIGHT - 36,
+				64,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				RENDER_WIDTH - 36,
+				RENDER_HEIGHT - 96,
+				4,
+				64,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			// L-shape lower-left corner
+			DrawRectangle(
+				32,
+				RENDER_HEIGHT - 96,
+				4,
+				64,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				32,
+				RENDER_HEIGHT - 36,
+				64,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			// bar in the center
+			DrawRectangle(
+				(RENDER_WIDTH / 2) - (96 / 2),
+				(RENDER_HEIGHT / 2) - (4 / 2),
+				96,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			break;
+		}
+		case 2:
+		{
+			// uniform blocks
+
+			DrawRectangle(
+				56,
+				32,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				120,
+				32,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				184,
+				32,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				248,
+				32,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				312,
+				32,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				56,
+				192,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				120,
+				192,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				184,
+				192,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				248,
+				192,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				312,
+				192,
+				16,
+				16,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				(RENDER_WIDTH / 2) - (8 / 2),
+				(RENDER_HEIGHT / 2) - (64 / 2),
+				8,
+				64,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);			
+
+			break;
+		}
+		case 3:
+		{
+			DrawRectangle(
+				32,
+				64,
+				128,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				RENDER_WIDTH - 160,
+				64,
+				128,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				32,
+				172,
+				128,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				RENDER_WIDTH - 160,
+				172,
+				128,
+				4,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				161,
+				64,
+				4,
+				112,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			DrawRectangle(
+				219,
+				64,
+				4,
+				112,
+				NULL,
+				&FULL_GREEN_PIXEL,
+				NULL,
+				DR_OPAQUE);
+
+			break;
+		}		
+		default:
+		{
+			ASSERT(FALSE, "Unknown map!");
+		}
+	}
+
 	// for each player...
 	for (int p = 0; p < 2; p++)
 	{

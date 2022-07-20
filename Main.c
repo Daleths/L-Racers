@@ -22,6 +22,14 @@
 //         while travelling perpendicular to each other, they could pass through one another instead
 //         of both players crashing as was intended.
 // 
+// v1.0.4: Modified the scrolling marquee text on the title screen.
+//         Added new maps for extra variability and replayability!
+// 
+// v1.0.5: Player's name is now saved so you don't have to re-enter your name every new multiplayer game.
+//         If either player in a network game chooses to return to the main menu, a quit signal is sent to
+//         the remote player so that they also return to the main menu. Otherwise, we may try to continue
+//         playing against another player who isn't there anymore.
+// 
 // 
 ////////////////////////////////////////////////////////////////
 
@@ -158,6 +166,8 @@ char gManualIP[16] = { 0 };
 int8_t gGamepadsPresent = -1;
 
 int8_t gGamepadsExpected = -1;
+
+uint8_t gMapStyle = 0;
 
 ///////////////////////////////////
 // End initialize extern globals 
@@ -376,7 +386,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 			
 			_snwprintf_s(WindowText, _countof(WindowText), _TRUNCATE, L"%s - FPS: %.02f / %.02f *DEBUG BUILD*", GAME_NAME_W, RawFPSAverage, CookedFPSAverage);
 
-			SetWindowTextW(WindowHandle, WindowText);
+			SetWindowTextW(gMainWindow, WindowText);
 		}
 #endif
 	}
@@ -2036,8 +2046,8 @@ int InitializeNetwork(void)
 		snprintf(
 			gNetworkData.BroadcastBuffer,
 			_countof(gNetworkData.BroadcastBuffer),
-			"LR-HOST:%02d:%s",
-			gPlayers[PLAYER_ONE].ColorIndex, gPlayers[PLAYER_ONE].Name);
+			"LR-HOST:%02d:%02d:%s",
+			gPlayers[PLAYER_ONE].ColorIndex, gMapStyle, gPlayers[PLAYER_ONE].Name);
 	}
 	else
 	{
@@ -2191,4 +2201,62 @@ void CalculateWindowPlacement(void)
 			}
 		}
 	}
+}
+
+DWORD SavePlayerName(void)
+{
+	DWORD Result = ERROR_SUCCESS;
+
+	HKEY RegKey = NULL;
+
+	DWORD RegDisposition = 0;
+
+	Result = RegCreateKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\" GAME_NAME_W, 0, NULL, 0, KEY_ALL_ACCESS, NULL, &RegKey, &RegDisposition);
+
+	if (Result != ERROR_SUCCESS)
+	{
+		goto Exit;
+	}
+
+	// Using ASCII version since the player's name is already in ASCII.
+	Result = RegSetValueExA(RegKey, "PlayerName", 0, REG_SZ, (BYTE*)gPlayers[PLAYER_ONE].Name, sizeof(gPlayers[PLAYER_ONE].Name));
+
+Exit:
+
+	if (RegKey)
+	{
+		RegCloseKey(RegKey);
+	}
+
+	return(Result);
+}
+
+DWORD LoadPlayerName(void)
+{
+	DWORD Result = ERROR_SUCCESS;
+
+	HKEY RegKey = NULL;
+
+	DWORD RegDisposition = 0;
+
+	DWORD DataSize = sizeof(gPlayers[PLAYER_ONE].Name);
+
+	Result = RegCreateKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\" GAME_NAME_W, 0, NULL, 0, KEY_ALL_ACCESS, NULL, &RegKey, &RegDisposition);
+
+	if (Result != ERROR_SUCCESS)
+	{
+		goto Exit;
+	}
+
+	// Using ASCII version since the player's name is already in ASCII.
+	Result = RegGetValueA(RegKey, NULL, "PlayerName", RRF_RT_REG_SZ, NULL, (PVOID)gPlayers[PLAYER_ONE].Name, &DataSize);	
+
+Exit:
+
+	if (RegKey)
+	{
+		RegCloseKey(RegKey);
+	}
+
+	return(Result);
 }
