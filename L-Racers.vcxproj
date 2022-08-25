@@ -163,6 +163,7 @@
     <ClCompile Include="miniz.c" />
     <ClCompile Include="Options.c" />
     <ClCompile Include="PostAction.c" />
+    <ClCompile Include="SplashScreen.c" />
     <ClCompile Include="stb_vorbis.c" />
     <ClCompile Include="TitleScreen.c" />
   </ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="Options.h" />
     <ClInclude Include="PostAction.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="stb_vorbis.h" />
     <ClInclude Include="TitleScreen.h" />
   </ItemGroup>

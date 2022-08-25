@@ -30,6 +30,8 @@
 //         the remote player so that they also return to the main menu. Otherwise, we may try to continue
 //         playing against another player who isn't there anymore.
 // 
+// v1.0.6: Added POLE PIG PRODUCTIONS splash screen.
+// 
 // 
 ////////////////////////////////////////////////////////////////
 
@@ -38,6 +40,8 @@
 // specific to that gamestate.
 
 #include "Main.h"
+
+#include "SplashScreen.h"
 
 #include "TitleScreen.h"
 
@@ -98,13 +102,17 @@ GAMEBITMAP gTopAccentPicture = { 0 };
 // Drawn in the GAMEPAD_UNPLUGGED gamestate.
 GAMEBITMAP gXboxGamepadPicture = { 0 };
 
+GAMEBITMAP gPolePig = { 0 };
+
+GAMEBITMAP gLightning01 = { 0 };
+
 // gPlayers[0] is PLAYER_ONE. gPlayers[1] is PLAYER_TWO.
 PLAYER gPlayers[2] = { 0 };
 
 uint64_t gTotalFramesRendered = 0;
 
 // The game is always in one of the possible gamestates.
-GAMESTATE gGameState = GAMESTATE_TITLESCREEN;
+GAMESTATE gGameState = GAMESTATE_SPLASHSCREEN;
 
 // Used by the "gamepad unplugged" gamestate to restore us to wherever
 // we were before the gamepad was surprise-removed.
@@ -153,6 +161,8 @@ GAMESOUND gMenuChooseSound = { 0 };
 
 GAMESOUND gExplosionSound = { 0 };
 
+GAMESOUND gSplashScreenSound = { 0 };
+
 // Contains all the data we need for multiplayer network play.
 NETWORKDATA gNetworkData = { 0 };
 
@@ -169,6 +179,8 @@ int8_t gGamepadsExpected = -1;
 
 uint8_t gMapStyle = 0;
 
+GAMESOUND gMusic = { 0 };
+
 ///////////////////////////////////
 // End initialize extern globals 
 ///////////////////////////////////
@@ -181,7 +193,7 @@ IXAudio2MasteringVoice* gXAudioMasteringVoice;
 
 uint8_t gSFXSourceVoiceSelector;
 
-GAMESOUND gMusic;
+
 
 
 // The program's entry point.
@@ -313,9 +325,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 	gPlayers[PLAYER_ONE].ColorIndex = 0;
 
-	gPlayers[PLAYER_TWO].ColorIndex = 1;
-
-	PlayGameMusic(&gMusic);
+	gPlayers[PLAYER_TWO].ColorIndex = 1;	
 
 	FindConnectedGamepads();
 
@@ -494,7 +504,10 @@ BOOL LoadAssets(void)
 		{ "Menu.wav", &gMenuSound },
 		{ "Choose.wav", &gMenuChooseSound },
 		{ "Explosion.wav", &gExplosionSound },
-		{ "L-Racers-BG2.ogg", &gMusic }
+		{ "L-Racers-BG2.ogg", &gMusic },
+		{ "polepig03.bmpx", &gPolePig },
+		{ "lightning01.bmpx", &gLightning01 },
+		{ "SplashScreen.wav", &gSplashScreenSound }
 	};
 
 	DWORD AssetFileAttributes = 0;
@@ -702,6 +715,12 @@ void CollectPlayerInput(void)
 
 	switch (gGameState)
 	{
+		case GAMESTATE_SPLASHSCREEN:
+		{
+			PPI_SplashScreen();
+
+			break;
+		}
 		case GAMESTATE_TITLESCREEN:	
 		{
 			PPI_TitleScreen();
@@ -846,6 +865,12 @@ void RenderFrameGraphics(void)
 {
 	switch (gGameState)
 	{
+		case GAMESTATE_SPLASHSCREEN:
+		{
+			Draw_SplashScreen();
+
+			break;
+		}
 		case GAMESTATE_TITLESCREEN:
 		{
 			Draw_TitleScreen();

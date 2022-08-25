@@ -122,7 +122,9 @@ typedef enum GAMESTATE
 
 	GAMESTATE_ENTERIP,
 
-	GAMESTATE_GAMEPADUNPLUGGED
+	GAMESTATE_GAMEPADUNPLUGGED,
+
+	GAMESTATE_SPLASHSCREEN
 
 } GAMESTATE;
 
@@ -343,6 +345,10 @@ extern GAMEBITMAP gTopAccentPicture;
 
 extern GAMEBITMAP gXboxGamepadPicture;
 
+extern GAMEBITMAP gPolePig;
+
+extern GAMEBITMAP gLightning01;
+
 extern PLAYER gPlayers[2];
 
 extern uint64_t gTotalFramesRendered;
@@ -371,6 +377,8 @@ extern GAMESOUND gMenuChooseSound;
 
 extern GAMESOUND gExplosionSound;
 
+extern GAMESOUND gSplashScreenSound;
+
 extern NETWORKDATA gNetworkData;
 
 extern GAMEHOST gGameHosts[5];
@@ -382,6 +390,8 @@ extern int8_t gGamepadsPresent;
 extern int8_t gGamepadsExpected;
 
 extern uint8_t gMapStyle;
+
+extern GAMESOUND gMusic;
 
 /* END GLOBAL VARIABLE DECLARATIONS */
 
