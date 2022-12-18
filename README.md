@@ -27,3 +27,5 @@ While you're here, check out my YouTube channel which contains a lot of Windows 
 ![lracers03](https://user-images.githubusercontent.com/5650163/208312253-cabfbac5-c7a0-4077-98f0-ba33a93ada57.png)
 ![lracers04](https://user-images.githubusercontent.com/5650163/208312256-1ed6f859-bfe8-4ea0-946f-cd0247de0303.png)
 ![maincapsule](https://user-images.githubusercontent.com/5650163/208312264-b73b594f-64e3-49ee-a4f6-68b9856ceefd.png)
+
+Gameplay video: https://www.youtube.com/watch?v=aqr4i0cr5iI
